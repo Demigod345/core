@@ -7,7 +7,20 @@ import { ethers } from "ethers";
 const EASContractAddress = "0x4200000000000000000000000000000000000021";
 const SchemaUID = "0x0353438abb8fc94491aa6c3629823c9ddcd0d7b28df6aa9a5281bbb5ff3bb6bb";
 const RPC_URL = "https://sepolia.base.org";
+import { pinata } from "@/utils/config";
+import contractABI from "@/contract/abi.json";
+import contractAddress from "@/contract/address.json";
 
+
+// export const config = {
+//   api: {
+//     bodyParser: false,
+//   },
+// };
+
+
+
+    
 // Add a listner that checks for POST req with this type of given data
 
 // { ServiceId: ...,
@@ -40,6 +53,7 @@ const getServiceId = async (attestation: any) => {
   return serviceId;
 };
 
+
 export async function POST(request: NextRequest) {
   try {
     const data = await request.json();
@@ -50,8 +64,21 @@ export async function POST(request: NextRequest) {
 
     // const result = await addPayoutData(payout);
     const r = await main(data.remarks, user, serviceId);
-
+    const dataS = {
+      response: r,
+    }
     console.log("Summary: ", r);
+
+    const uploadData = await pinata.upload.json(dataS);
+    console.log(uploadData);
+
+    const provider = new ethers.JsonRpcProvider(RPC_URL);
+    const signer = new ethers.Wallet(process.env.PRIVATE_KEY, provider);
+    const contract = new ethers.Contract(contractAddress.address, contractABI, signer);
+
+    const tx = await contract.submitFeedback(uploadData.IpfsHash, serviceId);
+    await tx.wait();
+    console.log("Transaction hash: ", tx.hash);
 
     // // // This triggers the function from chatbot
     if (r) {

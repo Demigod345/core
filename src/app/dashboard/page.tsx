@@ -58,6 +58,7 @@ export default function Dashboard() {
   const [feedbacks, setFeedbacks] = useState<Feedback[]>([])
   const { walletProvider } = useAppKitProvider()
   const { address, isConnected } = useAppKitAccount()
+  const [data, setData] = useState(null)
 
   const getContract = async () => {
     if (!isConnected) {
@@ -176,24 +177,28 @@ export default function Dashboard() {
 
       const feedbacksData = await contractWrite.getAllFeedbacks(BigInt(service.id))
       console.log(feedbacksData);
-      // const feedbacksPromises = Array.from({ length: feedbacksData.length / 2 }, (_, i) => i * 2).map(async (index) => {
-      //   const feedbackMetaData1 = feedbacksData[index]
-      //   const feedbackMetaData2 = feedbacksData[index + 1]
-      //   const IpfsHash = decodeUint32ToString(BigInt(feedbackMetaData1), BigInt(feedbackMetaData2))
-      //   const ipfsUrl = await pinata.gateways.convert(IpfsHash)
-      //   const response = await fetch(ipfsUrl)
-      //   return response.json()
-      // })
+      const feedbacksPromises = feedbacksData.map(async (feedbackMetaData) => {
+        const IpfsHash = feedbackMetaData;
+        const ipfsUrl = await pinata.gateways.convert(IpfsHash)
+        const response = await fetch(ipfsUrl)
+        return response.json()
+      })
 
-      // const fetchedFeedbacks = await toast.promise(
-      //   Promise.all(feedbacksPromises),
-      //   {
-      //     loading: 'Fetching feedbacks...',
-      //     success: 'Feedbacks fetched successfully',
-      //     error: 'Failed to fetch feedbacks',
-      //   }
-      // )
+      
+
+      const fetchedFeedbacks = await toast.promise(
+        Promise.all(feedbacksPromises),
+        {
+          loading: 'Fetching feedbacks...',
+          success: 'Feedbacks fetched successfully',
+          error: 'Failed to fetch feedbacks',
+        }
+      )
+
+
+      console.log(fetchedFeedbacks);
       // setFeedbacks(fetchedFeedbacks)
+      setData(fetchedFeedbacks)
     } catch (error) {
       toast.error("Failed to fetch feedbacks: " + error.message)
     }
