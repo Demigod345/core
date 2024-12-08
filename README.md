@@ -3,20 +3,20 @@
 Mumei is a solution for providing anonymous feedback without reviewer revealing his/her identity and service provider ensuring that the feedback is coming from someone who actually has ever used their services.
 
 ## Overview
-
+Mumei addresses critical challenges in feedback collection within Web3 by ensuring **user privacy**, offering **fair crypto rewards**, and providing **actionable insights** for companies. Traditional feedback systems often compromise user anonymity or fail to fairly compensate contributors. Mumei solves this by anonymizing feedback, ensuring it cannot be traced back to the user. This is achieved through **blockchain technology** and **AI-powered evaluations** that maintain privacy while ensuring users can still be rewarded for their valuable insights.
 
 
 ## Features
-- **Interactive Quiz**: Users answer a series of questions related to cryptocurrencies.
-- **On-Chain Interaction Recording**: Each user's quiz completion is recorded securely on the Oasis Network.
-- **Email Verification**: After completing the quiz, users receive a verification email to confirm their interaction.
+![architechture](Architechture.png)
+
+
 
 ## Getting Started
 
 ### Installation
 1. Clone the repository:
    ```bash
-   git clone https://github.com/PrivacyFeedback/Crypto-Quiz.git
+   git clone <Repo-Link>
    cd Crypto-Quiz
    ```
 
@@ -35,13 +35,6 @@ To run the crypto quiz site, execute:
 npm run dev
 ```
 
-## Usage
-1. Navigate to the quiz page.
-2. Complete the quiz.
-3. Check your email for the interaction verification link.
-
-## Documentation
-For integration details, please refer to the [PrivacyFeedback SDK Documentation](https://privacy-feedback.vercel.app/).
 
 ## License
 This example project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
