@@ -163,14 +163,23 @@ export default function MagicLinkFeedback() {
 
     try {
       console.log(feedbackData);
-        await fetch('/api/agent', {
+
+        const agentPromise = toast.promise(
+          fetch('/api/agent', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(feedbackData),
-        });
+          }).then(response => response.json()),
+          {
+            loading: 'Submitting feedback...',
+            success: 'Feedback submitted successfully!',
+            error: 'Failed to submit feedback',
+          }
+      );
       // TODO: Implement sending feedback to AI Agent
+      await agentPromise;
       setStep("submitted");
       toast.success("Feedback submitted successfully!");
     } catch (error) {
