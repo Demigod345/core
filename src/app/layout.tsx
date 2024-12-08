@@ -1,4 +1,4 @@
-// @ts-nocheck
+//@ts-nocheck
 
 import type { Metadata } from "next";
 import localFont from "next/font/local";

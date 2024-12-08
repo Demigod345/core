@@ -1,4 +1,4 @@
-// @ts-nocheck
+//@ts-nocheck
 
 import { MongoClient, ServerApiVersion } from 'mongodb'
 
